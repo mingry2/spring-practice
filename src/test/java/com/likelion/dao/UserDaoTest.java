@@ -20,6 +20,12 @@ class UserDaoTest {
 
     @Autowired
     ApplicationContext context;
+    UserDao userDao;
+
+    @BeforeEach
+    void setContext(){
+        this.userDao = context.getBean("awsUserDao", UserDao.class);
+    }
 
     @Test
     void addAndGet() throws SQLException {
