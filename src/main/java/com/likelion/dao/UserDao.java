@@ -4,6 +4,7 @@ import domain.User;
 
 import java.sql.*;
 import java.util.Map;
+import java.util.concurrent.CountedCompleter;
 
 public class UserDao {
 
@@ -14,6 +15,27 @@ public class UserDao {
 
     public UserDao(ConnectionMaker connectionMaker) {
         this.connectionMaker = connectionMaker;
+    }
+
+    public void deleteAll() throws SQLException {
+        Connection conn = connectionMaker.makeConnection();
+        PreparedStatement ps = conn.prepareStatement("delete from users");
+        ps.executeUpdate();
+        ps.close();
+        conn.close();
+    }
+
+    public int getCount() throws SQLException {
+        Connection conn = connectionMaker.makeConnection();
+        PreparedStatement ps = conn.prepareStatement("select count(*) from users");
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        int count = rs.getInt(1);
+
+        rs.close();
+        ps.close();
+        conn.close();
+        return count;
     }
 
     public void add() {
@@ -69,11 +91,11 @@ public class UserDao {
         }
     }
 
-    public static void main(String[] args) {
-//        UserDao userDao = new UserDao();
+    public static void main(String[] args) throws SQLException {
         UserDao userDao = new UserDao();
 //        userDao.add();
-        User user = userDao.findById("4");
-        System.out.println(user.getName());
+//        User user = userDao.findById("4");
+//        System.out.println(user.getName());
+        userDao.deleteAll();
     }
 }
