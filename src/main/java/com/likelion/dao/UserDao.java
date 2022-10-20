@@ -71,9 +71,9 @@ public class UserDao {
 
     public static void main(String[] args) {
 //        UserDao userDao = new UserDao();
-        UserDao userDao = new UserDao(new LocalConnectionMaker());
+        UserDao userDao = new UserDao();
 //        userDao.add();
-        User user = userDao.findById("6");
+        User user = userDao.findById("4");
         System.out.println(user.getName());
     }
 }
