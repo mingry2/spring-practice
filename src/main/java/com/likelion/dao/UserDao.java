@@ -42,9 +42,6 @@ public class UserDao {
                 }
             }
         }
-
-        ps.close();
-        conn.close();
     }
 
     public int getCount() throws SQLException {
