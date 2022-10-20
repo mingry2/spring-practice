@@ -19,9 +19,30 @@ public class UserDao {
     }
 
     public void deleteAll() throws SQLException {
-        Connection conn = connectionMaker.makeConnection();
-        PreparedStatement ps = conn.prepareStatement("delete from users");
-        ps.executeUpdate();
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = connectionMaker.makeConnection();
+            ps = conn.prepareStatement("delete from users");
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally { // 에러가 나도 실행되는 블럭
+            if(ps != null){
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                }
+            }
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
         ps.close();
         conn.close();
     }
